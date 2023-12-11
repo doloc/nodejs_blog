@@ -23,9 +23,7 @@
   },
   "homepage": "https://github.com/doloc/nodejs_blog#readme",
   "lint-staged": {
-    "src/**/*.{js,ts,tsx,json,scss,hbs}": [
-      "prettier --single-quote --trailing-comma all --tab-width 4 --write"
-    ]
+    "src/**/*.{js,ts,tsx,json,scss}": "prettier --write --single-quote --trailing-comma all --tab-width 4"
   },
   "husky": {
     "hooks": {
@@ -41,6 +39,7 @@
     "lint-staged": "^15.2.0",
     "morgan": "^1.10.0",
     "node-sass": "^9.0.0",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "prettier": "^3.1.1"
   }
 }
