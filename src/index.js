@@ -3,12 +3,13 @@ const express = require('express');
 const morgan = require('morgan');
 const methodOverride = require('method-override');
 const exphbs = require('express-handlebars');
+require('dotenv').config()
 
 const route = require('./routes');
 const db = require('./config/db');
 
 const app = express();
-const port = 9000;
+const port = process.env.PORT || 9000
 
 // connect to DB
 db.connect();
