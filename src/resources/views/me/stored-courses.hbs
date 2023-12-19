@@ -1,0 +1,154 @@
+<form class="mt-4" method="POST" action="/courses/delete-many?_method=DELETE">
+    <div class="container">
+        <div class="">
+            <h3>Khóa học của tôi</h3>
+            <a href="/me/trash/courses">Thùng rác ({{deletedCount}})</a>
+        </div>
+        <div class="my-2 d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+                <label class="form-check-label" for="checkbox-all">
+                    Chọn tất cả
+                </label>
+            </div>
+            <select class="form-select mx-4 select-checkbox" name="select-action">
+                <option value="0" selected>-- Hành động --</option>
+                <option value="1">Xóa</option>
+            </select>
+
+            <button id="btnAction" type="submit" class="btn btn-primary" disabled>Thực hiện</button>
+        </div>
+        <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" colspan="2">#</th>
+                <th scope="col">Tên khóa học</th>
+                <th scope="col">Trình độ</th>
+                <th scope="col" colspan="2">Thời gian tạo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each courses}}
+            <tr>
+                <th scope="row"><input class="form-check-input" name="courseIds" type="checkbox" value="{{this._id}}"></th>
+                    <td>{{sum @index 1}}</td>
+                    <td>{{this.title}}</td>
+                    <td>{{this.level}}</td>
+                    <td>{{this.createdAt}}</td>
+                    <td>
+                        <a href="/courses/{{this._id}}/edit" class="btn btn-link">Sửa</a>
+                        {{!-- /courses/{{this._id}}/delete --}}
+                        <a href="" class="btn btn-link" data-id="{{this._id}}" data-bs-toggle="modal" data-bs-target="#delete-course-modal">Xóa</a>
+                    </td>
+                </tr>
+            <tr>
+            {{else}}
+            <tr>
+                <td colspan="5" class="text-center">Không có khóa học nào. <a href="/courses/create">Đăng khóa học</a></td>
+            {{/each}}
+        </tbody>
+        </table>
+    </div>
+</form>
+
+{{!-- Delete Course --}}
+<div id="delete-course-modal" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa khóa học</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn chắc chắn muốn xóa khóa học này?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-course" type="button" class="btn btn-danger">Xóa bỏ</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    var exampleModal = document.getElementById('delete-course-modal')
+    var checkboxAll = $('#checkbox-all');
+    var checkboxItems = $('input[name="courseIds"]');
+    var selectAction = $('select[name="select-action"]');
+    var btnAction = $('#btnAction');
+    
+    if (exampleModal) {
+        exampleModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const recipient = button.getAttribute('data-id');
+    
+            const btnDeleteCourse = exampleModal.querySelector('#btn-delete-course');
+            btnDeleteCourse.onclick = () => {
+                // delete course use form data submit
+                console.log('delete course: ', recipient);
+                const form = document.createElement('form');
+                form.action = '/courses/' + recipient + '/delete?_method=DELETE';
+                form.method = 'POST';
+                document.body.appendChild(form);
+                form.submit();
+                document.body.removeChild(form);
+    
+                //exampleModal.querySelector('[data-bs-dismiss="modal"]').click();
+                // fetch(`/courses/${recipient}/delete`, {
+                //     method: 'POST',
+                // });
+                // // remove course from DOM
+                // const course = document.querySelector(`[data-id="${recipient}"]`).parentElement.parentElement;
+                // course.remove();
+            }
+        })
+    }
+
+    checkboxAll.change(function() {
+        let ischecked = $(this).is(':checked');
+        checkboxItems.prop('checked', ischecked);
+    })
+
+    checkboxItems.change(function() {
+        let isCheckedAll = $('input[name="courseIds"]:checked').length === checkboxItems.length;
+        checkboxAll.prop('checked', isCheckedAll);
+
+        let value = selectAction.val();
+        reRenderCheckbox(value > 0 && $('input[name="courseIds"]:checked').length > 0);
+    })
+
+    selectAction.change(function() {
+        let value = $(this).val();
+        reRenderCheckbox(value > 0 && $('input[name="courseIds"]:checked').length > 0);
+    })
+
+    function reRenderCheckbox(isChecked) {
+        btnAction.prop('disabled', !isChecked);
+    }
+
+    // btnAction.click(function() {
+    //     let action = selectAction.val();
+    //     let courseIds = $('input[name="courseIds"]:checked').map(function() {
+    //         return $(this).val();
+    //     }).get();
+    //     switch (action) {
+    //         case '1':
+    //             // delete course use form data submit
+    //             // courseIds.forEach(courseId => {
+    //             //     const form = document.createElement('form');
+    //             //     form.action = '/courses/' + courseId + '/delete?_method=DELETE';
+    //             //     form.method = 'POST';
+    //             //     document.body.appendChild(form);
+    //             //     form.submit();
+    //             // })
+// 
+    //             const form = document.createElement('form');
+    //             form.action = '/courses/' + courseIds + '/delete-many?_method=DELETE';
+    //             form.method = 'POST';
+    //             document.body.appendChild(form);
+    //             form.submit();
+    //             document.body.removeChild(form);
+    //             break;
+    //     }
+    // })
+</script>

@@ -1,6 +1,6 @@
 <nav class='navbar navbar-expand-lg bg-body-tertiary'>
-    <div class='container-fluid'>
-        <a class='navbar-brand' href='#'>Navbar</a>
+    <div class='container'>
+        <a class='navbar-brand' href='/'>F8 Education</a>
         <button
             class='navbar-toggler'
             type='button'
@@ -14,16 +14,6 @@
         </button>
         <div class='collapse navbar-collapse' id='navbarSupportedContent'>
             <ul class='navbar-nav me-auto mb-2 mb-lg-0'>
-                <li class='nav-item'>
-                    <a
-                        class='nav-link active'
-                        aria-current='page'
-                        href='#'
-                    >Home</a>
-                </li>
-                <li class='nav-item'>
-                    <a class='nav-link' href='#'>Link</a>
-                </li>
                 <li class='nav-item dropdown'>
                     <a
                         class='nav-link dropdown-toggle'
@@ -35,11 +25,12 @@
                         Dropdown
                     </a>
                     <ul class='dropdown-menu'>
-                        <li><a class='dropdown-item' href='#'>Action</a></li>
-                        <li><a class='dropdown-item' href='#'>Another action</a></li>
+                        <li><a class='dropdown-item' href='/courses/create'>Đăng khóa học</a></li>
                         <li><hr class='dropdown-divider' /></li>
-                        <li><a class='dropdown-item' href='#'>Something else
-                                here</a></li>
+                        <li><a class='dropdown-item' href='/me/stored/courses'>Khóa học của tôi</a></li>
+                        <li><a class='dropdown-item' href='/me/stored/news'>Bài viết của tôi</a></li>
+                        <li><hr class='dropdown-divider' /></li>
+                        <li><a class='dropdown-item' href=''>Đăng xuất</a></li>
                     </ul>
                 </li>
                 <li class='nav-item'>
@@ -49,7 +40,7 @@
                     >Disabled</a>
                 </li>
             </ul>
-            <form class='d-flex' role='search'>
+            {{!-- <form class='d-flex' role='search'>
                 <input
                     class='form-control me-2'
                     type='search'
@@ -60,7 +51,7 @@
                     class='btn btn-outline-success'
                     type='submit'
                 >Search</button>
-            </form>
+            </form> --}}
         </div>
     </div>
 </nav>
